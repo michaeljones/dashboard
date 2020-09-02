@@ -1,0 +1,6 @@
+#!/bin/bash -e
+
+mix test
+mix compile --force --warnings-as-errors
+# mix credo --strict
+# mix dialyzer
