@@ -1,0 +1,65 @@
+#!/bin/bash -e
+
+echo
+read -p "  Run the tests? [Y/n]:" answer
+
+# ${var,,} syntax in bash performs a 'lowercase' on the string
+if [ "${answer,,}" = "y" -o -z "$answer" ]; then
+	./run-tests
+fi
+
+echo
+echo "  Checking git diff"
+git diff --quiet || (echo -e "\n  Failed. You have local changes."; exit 1)
+git diff --cached --quiet || (echo -e "\n  Failed. You have staged changes."; exit 1)
+
+other_files=$(git ls-files --exclude-standard --others lib config test)
+if [ ! -z "$other_files" ]; then
+	echo -e "\n  Failed. You have untracked files in 'lib' or 'config'."
+	exit 1
+fi
+
+today=$(date "+%Y.%-m.%-d")
+# Count matching tags to get build number for the day
+build=$(git tag | grep -c $today) || true
+sem_ver_version="$today+$build"
+version="$today-$build"
+version_file=lib/dashboard_web/templates/layout/app.html.eex
+
+read -p "  Update version to ${version}? [Y/n]:" answer
+
+# ${var,,} syntax in bash performs a 'lowercase' on the string
+if [ "${answer,,}" = "y" -o -z "$answer" ]; then
+	# Update the version number in the html rather than mix.exs as updating
+	# mix.exs triggers a significant docker rebuild
+	sed -r -i \
+		"s/Version: [0-9]+\.[0-9]+\.[0-9]+\+[0-9]+?/Version: $sem_ver_version/" \
+		$version_file
+fi
+
+branch=release-${version}
+
+read -p "  Create release branch, tag ${version} & merge? [Y/n]:" answer
+
+# ${var,,} syntax in bash performs a 'lowercase' on the string
+if [ "${answer,,}" = "y" -o -z "$answer" ]; then
+
+	git checkout -b ${branch}
+
+	git commit $version_file -m "Bump to $version"
+
+	git tag ${version}
+
+	git checkout master
+
+	git merge --no-ff --no-edit ${branch}
+
+	git branch -d ${branch}
+fi
+
+read -p "  Push master & ${version} to git remotes? [Y/n]:" answer
+
+# ${var,,} syntax in bash performs a 'lowercase' on the string
+if [ "${answer,,}" = "y" -o -z "$answer" ]; then
+	git push origin master ${version}
+fi
