@@ -1,0 +1,129 @@
+:root {
+    --red: #c65646;
+    --dark-navy: #355164;
+    --tangerine: #ff6b31;
+    --off-white: #f6f6f6;
+
+    --primary: var(--dark-navy);
+    --secondary: var(--red);
+    --secondary-light: #ff735f;
+    --error: var(--tangerine);
+
+    --grey-1: #444444;
+    --grey-2: #666666;
+    --grey-3: #888888;
+    --grey-4: #aaaaaa;
+    --grey-5: #dddddd;
+    --grey-6: #eeeeee;
+
+    --standard-border-radius: 3px;
+
+    font-size: 16px;
+}
+
+@tailwind base;
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    @apply h-full;
+}
+
+body {
+    @apply grid h-full;
+
+    grid-template-columns: 0 auto 0;
+    grid-template-rows: min-content auto min-content;
+    grid-template-areas:
+        "header-left header header-right"
+        ". main ."
+        "footer-left footer footer-right ";
+
+    font-family: Tahoma, sans-serif;
+}
+
+header {
+    grid-area: header;
+}
+
+.header-left {
+    grid-area: header-left;
+}
+
+.header-right {
+    grid-area: header-right;
+}
+
+main {
+    grid-area: main;
+}
+
+footer {
+    grid-area: footer;
+}
+
+@tailwind components;
+
+/* Alerts and form errors */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-info {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.alert-warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.alert p {
+    margin-bottom: 0;
+}
+
+.alert:empty {
+    display: none;
+}
+
+.invalid-feedback {
+    color: #a94442;
+    display: block;
+    margin: -1rem 0 2rem;
+}
+
+.links a {
+    @apply text-mid-blue;
+}
+
+.base-entry {
+    @apply border border-grey-5 rounded p-4 my-2;
+}
+
+.base-entry-outer {
+    @apply border border-grey-5 rounded my-2;
+}
+
+.base-entry-inner {
+    @apply p-4;
+}
+
+.release {
+    @apply border-l-2 border-primary rounded;
+}
+
+@tailwind utilities;
