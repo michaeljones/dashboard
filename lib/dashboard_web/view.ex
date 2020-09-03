@@ -38,7 +38,7 @@ defmodule DashboardWeb.View do
 
   def unhandled(entry) do
     ~E"""
-      <li class="base-entry border-secondary">
+      <li class="base-entry">
         <%= repo_link entry["repo"] %> <%= entry["type"] %> - <%= Timex.from_now(entry["datetime"]) %>
       </li>
     """
