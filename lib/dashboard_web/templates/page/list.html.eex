@@ -11,28 +11,32 @@
 
 <div class="timeline-container links-secondary">
   <div class="timeline-background"></div>
-  <ul class="timeline links">
+  <ul class="timeline">
     <%= for entry <- @result do %>
         <%= cond do %>
 
           <% entry["type"] == "PushEvent" -> %>
-            <li class="slim-entry">
-              <div class="timeline-circle"></div>
-              <span>
-                <%= repo_link entry["repo"] %> New Commits
+            <li class="quiet-entry">
+              <div class="timeline-circle flex-shrink-0"></div>
+              <div class="flex-shrink-0">
+                <%= repo_link entry["repo"], quiet: true %> New Commits
                 - <%= Timex.from_now(entry["datetime"]) %>
-              </span>
-              <ul class="inline list-disc pl-2">
-                <%= for commit <- Enum.reverse(entry["payload"]["commits"]) do %>
-                  <li class="inline"><%= commit_link commit, entry["repo"] %></li>
+              </div>
+              <div class="pl-2 truncate">
+                <%= for item <- (Enum.reverse(entry["payload"]["commits"]) |> Enum.intersperse(",")) do %>
+                  <%= if item == "," do %>
+                    <%= item <> " " %>
+                  <% else %>
+                   <%= commit_link item, entry["repo"] %>
+                  <% end %>
                 <% end %>
-              </ul>
+              </div>
             </li>
 
           <% entry["type"] == "PullRequestReviewEvent" -> %>
             <li class="base-entry">
               <%= repo_link entry["repo"] %> Pull Request Review:
-              <%= link entry["payload"]["pull_request"]["title"], to: entry["payload"]["review"]["html_url"] %>
+              <%= link entry["payload"]["pull_request"]["title"], to: entry["payload"]["review"]["html_url"], class: "text-mid-blue"%>
               - <%= Timex.from_now(entry["datetime"]) %>
             </li>
 

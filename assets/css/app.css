@@ -126,9 +126,12 @@ footer {
     @apply border-l-2 border-primary rounded;
 }
 
-.slim-entry {
+.quiet-entry {
     @apply flex items-center my-4;
 
+    /* This is a hack as otherwise the content overflows the parent and I've
+       not been able to figure out the correct solution */
+    width: 80vw;
     margin-left: calc(1.1rem + 2px);
 }
 
