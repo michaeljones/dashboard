@@ -1,6 +1,15 @@
 
 # Dashboard
 
+## Live Version
+
+A live version of this dashboard can be found at: https://dashboard.michaeljopnes.co.uk
+
+There are currently Elm & Gleam dashboards. It is easy to add more.
+
+
+## For Development
+
 Create a `config/dev.secret.exs` file with the following contents:
 
 ```
