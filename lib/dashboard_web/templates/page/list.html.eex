@@ -7,7 +7,7 @@
   <% end %>
 </ul>
 
-<p class="ml-4 my-4">Events are cached for an hour.</p>
+<p class="ml-4 my-4">Events are cached for an hour. Red border indicates events that don't have specific display code yet.</p>
 
 <div class="timeline-container links-secondary">
   <div class="timeline-background"></div>
