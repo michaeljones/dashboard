@@ -111,11 +111,11 @@ footer {
 }
 
 .base-entry {
-    @apply border border-grey-5 rounded p-4 my-2;
+    @apply border border-grey-5 rounded bg-white p-4 my-2;
 }
 
 .base-entry-outer {
-    @apply border border-grey-5 rounded my-2;
+    @apply border border-grey-5 rounded bg-white my-2;
 }
 
 .base-entry-inner {
@@ -124,6 +124,39 @@ footer {
 
 .release {
     @apply border-l-2 border-primary rounded;
+}
+
+.slim-entry {
+    @apply flex items-center my-4;
+
+    margin-left: calc(1.1rem + 2px);
+}
+
+.timeline-container {
+    position: relative;
+    z-index: 0;
+}
+
+.timeline-background {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    margin: 1rem 1rem 1rem 1.5rem;
+    border-left: 4px solid var(--grey-5);
+}
+
+.timeline {
+    position: relative;
+    z-index: 2;
+    list-style: none;
+    padding-left: 0;
+}
+
+.timeline-circle {
+    @apply rounded-full bg-grey-5 mr-2;
+    width: 0.8rem;
+    height: 0.8rem;
 }
 
 @tailwind utilities;

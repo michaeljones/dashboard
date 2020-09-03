@@ -26,6 +26,24 @@ defmodule DashboardWeb.View do
     Link.link(pr["title"], to: pr["html_url"])
   end
 
+  def commit_link(commit, repo) do
+    Link.link(commit["message"], to: "https://github.com/#{repo["name"]}/commit/#{commit["sha"]}")
+  end
+
+  def sha_link(sha, repo) do
+    Link.link(String.slice(sha, 0, 10) <> "...",
+      to: "https://github.com/#{repo["name"]}/commit/#{sha}"
+    )
+  end
+
+  def unhandled(entry) do
+    ~E"""
+      <li class="base-entry border-secondary">
+        <%= repo_link entry["repo"] %> <%= entry["type"] %> - <%= Timex.from_now(entry["datetime"]) %>
+      </li>
+    """
+  end
+
   def dump(entry) do
     ~E"<pre><%= Kernel.inspect(entry, pretty: true) %></pre>"
   end

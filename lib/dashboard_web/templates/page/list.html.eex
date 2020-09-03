@@ -9,79 +9,100 @@
 
 <p class="ml-4 my-4">Events are cached for an hour.</p>
 
-<ul class="links">
-  <%= for entry <- @result do %>
-      <%= cond do %>
+<div class="timeline-container links-secondary">
+  <div class="timeline-background"></div>
+  <ul class="timeline links">
+    <%= for entry <- @result do %>
+        <%= cond do %>
 
-        <% entry["type"] == "PushEvent" -> %>
-          <li class="base-entry">
-            <%= repo_link entry["repo"] %> Push
-            - <%= Timex.from_now(entry["datetime"]) %>
-          </li>
+          <% entry["type"] == "PushEvent" -> %>
+            <li class="slim-entry">
+              <div class="timeline-circle"></div>
+              <span>
+                <%= repo_link entry["repo"] %> New Commits
+                - <%= Timex.from_now(entry["datetime"]) %>
+              </span>
+              <ul class="inline list-disc pl-2">
+                <%= for commit <- Enum.reverse(entry["payload"]["commits"]) do %>
+                  <li class="inline"><%= commit_link commit, entry["repo"] %></li>
+                <% end %>
+              </ul>
+            </li>
 
-        <% entry["type"] == "ReleaseEvent" -> %>
-          <li class="base-entry-outer">
-            <p class="base-entry-inner release">
-              <%= repo_link entry["repo"] %> New Release
-              - <%= release_link entry["payload"]["release"] %>
+          <% entry["type"] == "PullRequestReviewEvent" -> %>
+            <li class="base-entry">
+              <%= repo_link entry["repo"] %> Pull Request Review:
+              <%= link entry["payload"]["pull_request"]["title"], to: entry["payload"]["review"]["html_url"] %>
               - <%= Timex.from_now(entry["datetime"]) %>
-            </p>
-          </li>
+            </li>
 
-        <% entry["type"] == "IssuesEvent" -> %>
-          <%= cond do %>
-            <% entry["payload"]["action"] == "opened" -> %>
-              <li class="base-entry">
-                <%= repo_link entry["repo"] %> Opened Issue
-                - <%= Timex.from_now(entry["datetime"]) %>
-              </li>
-
-            <% true -> %>
-              <li class="base-entry">
-                Unknown IssuesEvent
-                - <%= Timex.from_now(entry["datetime"]) %>
-              </li>
-          <% end %>
-
-        <% entry["type"] == "IssueCommentEvent" -> %>
-          <li class="base-entry">
-            <p>
-              <%= repo_link entry["repo"] %> Comment on issue <%= issue_link entry["payload"]["issue"] %>
-              - <%= actor_link entry["actor"] %>
+          <% entry["type"] == "CommitCommentEvent" -> %>
+            <li class="base-entry">
+              <%= repo_link entry["repo"] %> Comment on commit:
+              <%= sha_link entry["payload"]["comment"]["commit_id"], entry["repo"] %>
               - <%= Timex.from_now(entry["datetime"]) %>
-            </p>
-            <p class="mt-2">
-              <%= Markdown.as_html(entry["payload"]["comment"]["body"]) %>
-            </p>
-          </li>
+              <p class="mt-2">
+                <%= Markdown.as_html(entry["payload"]["comment"]["body"]) %>
+              </p>
+            </li>
 
-        <% entry["type"] == "PullRequestEvent" -> %>
-          <%= cond do %>
-            <% entry["payload"]["action"] == "opened" -> %>
-              <li class="base-entry">
-                <%= repo_link entry["repo"] %> Pull Request Opened
-                - <%= pr_title_link entry["payload"]["pull_request"] %>
+          <% entry["type"] == "ReleaseEvent" -> %>
+            <li class="base-entry-outer">
+              <p class="base-entry-inner release">
+                <%= repo_link entry["repo"] %> New Release
+                - <%= release_link entry["payload"]["release"] %>
                 - <%= Timex.from_now(entry["datetime"]) %>
-              </li>
+              </p>
+            </li>
 
-            <% entry["payload"]["action"] == "closed" -> %>
-              <li class="base-entry">
-                <%= repo_link entry["repo"] %> Pull Request Closed
-                - <%= pr_title_link entry["payload"]["pull_request"] %>
+          <% entry["type"] == "IssuesEvent" -> %>
+            <%= cond do %>
+              <% entry["payload"]["action"] == "opened" -> %>
+                <li class="base-entry">
+                  <%= repo_link entry["repo"] %> Opened Issue
+                  - <%= Timex.from_now(entry["datetime"]) %>
+                </li>
+
+              <% true -> %>
+                <%= unhandled entry %>
+            <% end %>
+
+          <% entry["type"] == "IssueCommentEvent" -> %>
+            <li class="base-entry">
+              <p>
+                <%= repo_link entry["repo"] %> Comment on issue <%= issue_link entry["payload"]["issue"] %>
+                - <%= actor_link entry["actor"] %>
                 - <%= Timex.from_now(entry["datetime"]) %>
-              </li>
+              </p>
+              <p class="mt-2">
+                <%= Markdown.as_html(entry["payload"]["comment"]["body"]) %>
+              </p>
+            </li>
 
-            <% true -> %>
-              <li class="base-entry">
-                <%= dump entry %>
-              </li>
-          <% end %>
+          <% entry["type"] == "PullRequestEvent" -> %>
+            <%= cond do %>
+              <% entry["payload"]["action"] == "opened" -> %>
+                <li class="base-entry">
+                  <%= repo_link entry["repo"] %> Pull Request Opened
+                  - <%= pr_title_link entry["payload"]["pull_request"] %>
+                  - <%= Timex.from_now(entry["datetime"]) %>
+                </li>
 
-        <% true -> %>
-          <li class="base-entry">
-            <%= repo_link entry["repo"] %> <%= entry["type"] %> - <%= Timex.from_now(entry["datetime"]) %>
-          </li>
+              <% entry["payload"]["action"] == "closed" -> %>
+                <li class="base-entry">
+                  <%= repo_link entry["repo"] %> Pull Request Closed
+                  - <%= pr_title_link entry["payload"]["pull_request"] %>
+                  - <%= Timex.from_now(entry["datetime"]) %>
+                </li>
 
-      <% end %>
-  <% end %>
-</ul>
+              <% true -> %>
+                <%= unhandled entry %>
+            <% end %>
+
+          <% true -> %>
+            <%= unhandled entry %>
+
+        <% end %>
+    <% end %>
+  </ul>
+</div>
