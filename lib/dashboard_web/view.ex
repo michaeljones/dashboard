@@ -17,10 +17,14 @@ defmodule DashboardWeb.View do
         "bg-grey-6"
       end
 
-    Link.link(repo["name"],
-      to: "https://github.com/#{repo["name"]}",
-      class: class <> " px-2 py-1 rounded text-mid-blue"
-    )
+    ~E"""
+      <div class="sm:inline mb-2">
+       <%= link repo["name"],
+        to: "https://github.com/#{repo["name"]}",
+        class: class <> " px-2 py-1 rounded text-mid-blue -mx-2 sm:mx-0"
+       %>
+      </div>
+    """
   end
 
   def release_link(release) do
@@ -57,7 +61,10 @@ defmodule DashboardWeb.View do
   def unhandled(entry) do
     ~E"""
       <li class="base-entry border-secondary">
-        <%= repo_link entry["repo"] %> <%= entry["type"] %> - <%= Timex.from_now(entry["datetime"]) %>
+        <div class="sm:inline"><%= repo_link entry["repo"] %></div>
+        <div class="sm:inline"><%= entry["type"] %></div>
+        <div class="hidden sm:inline">-</div>
+        <div class="sm:inline"><%= actor_link entry["actor"] %> - <%= Timex.from_now(entry["datetime"]) %></div>
       </li>
     """
   end

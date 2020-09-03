@@ -34,7 +34,7 @@ html {
 body {
     @apply grid h-full;
 
-    grid-template-columns: 0 auto 0;
+    grid-template-columns: 0 100% 0;
     grid-template-rows: min-content auto min-content;
     grid-template-areas:
         "header-left header header-right"

@@ -1,5 +1,8 @@
 
-<p class="ml-4 my-4">Activity for: <button id="show-repositories" class="text-mid-blue"><%= @repositories_display %></button></p>
+<p class="flex my-2 sm:my-4 sm:ml-4">
+  <span class="whitespace-no-wrap">Activity for:</span>
+  <button id="show-repositories" class="text-mid-blue truncate ml-2"><%= @repositories_display %></button>
+</p>
 
 <ul id="repository-list" class="hidden ml-12 list-disc links">
   <%= for repo <- @repositories do %>
@@ -7,7 +10,7 @@
   <% end %>
 </ul>
 
-<p class="ml-4 my-4">Events are cached for an hour. Red border indicates events that don't have specific display code yet.</p>
+<p class="my-4 sm:ml-4">Events are cached for an hour. Red border indicates events that don't have specific display code yet.</p>
 
 <div class="timeline-container links-secondary">
   <div class="timeline-background"></div>
@@ -33,18 +36,15 @@
               </div>
             </li>
 
-          <% entry["type"] == "PullRequestReviewEvent" -> %>
-            <li class="base-entry">
-              <%= repo_link entry["repo"] %> Pull Request Review:
-              <%= link entry["payload"]["pull_request"]["title"], to: entry["payload"]["review"]["html_url"], class: "text-mid-blue"%>
-              - <%= Timex.from_now(entry["datetime"]) %>
-            </li>
-
           <% entry["type"] == "CommitCommentEvent" -> %>
             <li class="base-entry">
-              <%= repo_link entry["repo"] %> Comment on commit:
-              <%= sha_link entry["payload"]["comment"]["commit_id"], entry["repo"] %>
-              - <%= Timex.from_now(entry["datetime"]) %>
+              <%= repo_link entry["repo"] %>
+              <div class="sm:inline">Comment on commit:</div>
+              <div class="sm:inline">
+                <%= sha_link entry["payload"]["comment"]["commit_id"], entry["repo"] %>
+              </div>
+              <div class="hidden sm:inline">-</div>
+              <div class="sm:inline"><%= actor_link entry["actor"] %> - <%= Timex.from_now(entry["datetime"]) %></div>
               <p class="mt-2">
                 <%= Markdown.as_html(entry["payload"]["comment"]["body"]) %>
               </p>
@@ -52,11 +52,11 @@
 
           <% entry["type"] == "ReleaseEvent" -> %>
             <li class="base-entry-outer">
-              <p class="base-entry-inner release">
+              <div class="base-entry-inner release">
                 <%= repo_link entry["repo"] %> New Release
                 - <%= release_link entry["payload"]["release"] %>
                 - <%= Timex.from_now(entry["datetime"]) %>
-              </p>
+              </div>
             </li>
 
           <% entry["type"] == "IssuesEvent" -> %>
@@ -73,11 +73,12 @@
 
           <% entry["type"] == "IssueCommentEvent" -> %>
             <li class="base-entry">
-              <p>
-                <%= repo_link entry["repo"] %> Comment on issue <%= issue_link entry["payload"]["issue"] %>
-                - <%= actor_link entry["actor"] %>
-                - <%= Timex.from_now(entry["datetime"]) %>
-              </p>
+              <div>
+                <%= repo_link entry["repo"] %>
+                <div class="sm:inline">Comment on issue <%= issue_link entry["payload"]["issue"] %></div>
+                <div class="hidden sm:inline">-</div>
+                <div class="sm:inline"><%= actor_link entry["actor"] %> - <%= Timex.from_now(entry["datetime"]) %></div>
+              </div>
               <p class="mt-2">
                 <%= Markdown.as_html(entry["payload"]["comment"]["body"]) %>
               </p>
@@ -87,21 +88,39 @@
             <%= cond do %>
               <% entry["payload"]["action"] == "opened" -> %>
                 <li class="base-entry">
-                  <%= repo_link entry["repo"] %> Pull Request Opened
-                  - <%= pr_title_link entry["payload"]["pull_request"] %>
-                  - <%= Timex.from_now(entry["datetime"]) %>
+                  <%= repo_link entry["repo"] %>
+                  <div class="sm:inline">Pull Request Opened</div>
+                  <div class="hidden sm:inline">-</div>
+                  <div class="sm:inline"><%= pr_title_link entry["payload"]["pull_request"] %></div>
+                  <div class="hidden sm:inline">-</div>
+                  <div class="sm:inline"><%= actor_link entry["actor"] %> - <%= Timex.from_now(entry["datetime"]) %></div>
                 </li>
 
               <% entry["payload"]["action"] == "closed" -> %>
                 <li class="base-entry">
-                  <%= repo_link entry["repo"] %> Pull Request Closed
-                  - <%= pr_title_link entry["payload"]["pull_request"] %>
-                  - <%= Timex.from_now(entry["datetime"]) %>
+                  <%= repo_link entry["repo"] %>
+                  <div class="sm:inline">Pull Request Closed</div>
+                  <div class="hidden sm:inline">-</div>
+                  <div class="sm:inline"><%= pr_title_link entry["payload"]["pull_request"] %></div>
+                  <div class="hidden sm:inline">-</div>
+                  <div class="sm:inline"><%= actor_link entry["actor"] %> - <%= Timex.from_now(entry["datetime"]) %></div>
                 </li>
 
               <% true -> %>
                 <%= unhandled entry %>
             <% end %>
+
+          <% entry["type"] == "PullRequestReviewEvent" -> %>
+            <li class="base-entry">
+              <%= repo_link entry["repo"] %>
+              <div class="sm:inline">Pull Request Review:</div>
+              <div class="sm:inline">
+                <%= link entry["payload"]["pull_request"]["title"], to: entry["payload"]["review"]["html_url"], class: "text-mid-blue"%>
+              </div>
+              <div class="hidden sm:inline">-</div>
+              <div class="sm:inline"><%= actor_link entry["actor"] %> - <%= Timex.from_now(entry["datetime"]) %></div>
+            </li>
+
 
           <% true -> %>
             <%= unhandled entry %>

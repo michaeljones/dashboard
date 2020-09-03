@@ -101,8 +101,6 @@ defmodule DashboardWeb.PageController do
       |> Enum.sort()
       |> Enum.intersperse(", ")
       |> Enum.join("")
-      |> String.slice(0, 100)
-      |> (fn string -> string <> "..." end).()
 
     render(conn, "list.html",
       list_name: list_name,
