@@ -21,12 +21,12 @@
           <% entry["type"] == "PushEvent" -> %>
             <li class="quiet-entry">
               <div class="timeline-circle flex-shrink-0"></div>
-              <div class="flex-shrink-0">
+              <div class="truncate sm:flex-shrink-0">
                 <%= repo_link entry["repo"], quiet: true, inline: true %>
                 <%= push_link entry["payload"], entry["repo"] %>
                 <span class="hidden sm:inline">- <%= Timex.from_now(entry["datetime"]) %></span>
               </div>
-              <div class="pl-2 truncate hidden sm:block">
+              <div class="pl-2 hidden sm:block">
                 <%= for item <- (Enum.reverse(entry["payload"]["commits"]) |> Enum.intersperse(",")) do %>
                   <%= if item == "," do %>
                     <%= item <> " " %>
@@ -46,9 +46,7 @@
               </div>
               <div class="hidden sm:inline">-</div>
               <div class="sm:inline"><%= actor_link entry["actor"] %> - <%= Timex.from_now(entry["datetime"]) %></div>
-              <p class="mt-2">
-                <%= Markdown.as_html(entry["payload"]["comment"]["body"]) %>
-              </p>
+              <%= markdown entry["payload"]["comment"]["body"] %>
             </li>
 
           <% entry["type"] == "ReleaseEvent" -> %>
@@ -80,9 +78,7 @@
                 <div class="hidden sm:inline">-</div>
                 <div class="sm:inline"><%= actor_link entry["actor"] %> - <%= Timex.from_now(entry["datetime"]) %></div>
               </div>
-              <p class="mt-2">
-                <%= Markdown.as_html(entry["payload"]["comment"]["body"]) %>
-              </p>
+              <%= markdown entry["payload"]["comment"]["body"] %>
             </li>
 
           <% entry["type"] == "PullRequestEvent" -> %>

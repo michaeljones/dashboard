@@ -130,9 +130,16 @@ footer {
     @apply flex items-center my-4;
 
     /* This is a hack as otherwise the content overflows the parent and I've
-       not been able to figure out the correct solution */
-    width: 80vw;
+       not been able to figure out the correct solution
+
+       The 3rem is from trial and error on small screens
+     */
     margin-left: calc(1.1rem + 2px);
+    width: calc(100vw - 4rem);
+
+    @media (min-width: 640px) {
+        width: 80vw;
+    }
 }
 
 .timeline-container {
@@ -160,6 +167,14 @@ footer {
     @apply rounded-full bg-grey-5 mr-2;
     width: 0.8rem;
     height: 0.8rem;
+}
+
+.markdown {
+    overflow-x: auto;
+
+    pre {
+        overflow-x: auto;
+    }
 }
 
 @tailwind utilities;

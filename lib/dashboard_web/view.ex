@@ -78,7 +78,15 @@ defmodule DashboardWeb.View do
 
     url = "https://github.com/#{repo["name"]}/compare/#{before_short}...#{head_short}"
 
-    Link.link(text, to: url, class: "text-mid-blue")
+    Link.link(text, to: url, class: "text-mid-blue truncate")
+  end
+
+  def markdown(text) do
+    ~E"""
+      <div class="mt-2 markdown">
+        <%= DashboardWeb.Markdown.as_html(text) %>
+      </div>
+    """
   end
 
   def unhandled(entry) do
