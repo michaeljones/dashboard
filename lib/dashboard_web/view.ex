@@ -17,13 +17,20 @@ defmodule DashboardWeb.View do
         "bg-grey-6"
       end
 
+    div_class =
+      if quiet do
+        "inline mb-2 mx-2"
+      else
+        "block sm:inline mb-2"
+      end
+
     ~E"""
-      <div class="sm:inline mb-2">
+      <span class="<%= div_class %>">
        <%= link repo["name"],
         to: "https://github.com/#{repo["name"]}",
         class: class <> " px-2 py-1 rounded text-mid-blue -mx-2 sm:mx-0"
        %>
-      </div>
+      </span>
     """
   end
 
@@ -56,6 +63,22 @@ defmodule DashboardWeb.View do
       to: "https://github.com/#{repo["name"]}/commit/#{sha}",
       class: "text-mid-blue"
     )
+  end
+
+  def push_link(push, repo) do
+    text =
+      if push["distinct_size"] == 1 do
+        "1 New Commit"
+      else
+        Integer.to_string(push["distinct_size"]) <> " New Commits"
+      end
+
+    before_short = String.slice(push["before"], 0, 10)
+    head_short = String.slice(push["head"], 0, 10)
+
+    url = "https://github.com/#{repo["name"]}/compare/#{before_short}...#{head_short}"
+
+    Link.link(text, to: url, class: "text-mid-blue")
   end
 
   def unhandled(entry) do
