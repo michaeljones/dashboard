@@ -3,7 +3,7 @@
 
 ## Live Version
 
-A live version of this dashboard can be found at: https://dashboard.michaeljopnes.co.uk
+A live version of this dashboard can be found at: https://dashboard.michaelpjones.co.uk
 
 There are currently Elm & Gleam dashboards. It is easy to add more.
 
