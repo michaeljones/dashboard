@@ -127,7 +127,7 @@ footer {
 }
 
 .quiet-entry {
-    @apply flex items-center my-4;
+    @apply flex items-center my-2;
 
     /* This is a hack as otherwise the content overflows the parent and I've
        not been able to figure out the correct solution

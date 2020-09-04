@@ -21,7 +21,7 @@
           <% entry["type"] == "PushEvent" -> %>
             <li class="quiet-entry">
               <div class="timeline-circle flex-shrink-0"></div>
-              <div class="truncate sm:flex-shrink-0">
+              <div class="py-1 truncate sm:flex-shrink-0">
                 <%= repo_link entry["repo"], quiet: true, inline: true %>
                 <%= push_link entry["payload"], entry["repo"] %>
                 <span class="hidden sm:inline">- <%= Timex.from_now(entry["datetime"]) %></span>
