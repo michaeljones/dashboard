@@ -29,6 +29,6 @@
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
       <%= @inner_content %>
     </main>
-    <footer class="bg-dark-blue text-white p-4 text-center">Version: 2020.9.4+0</footer>
+    <footer class="bg-dark-blue text-white p-4 text-center">Version: 2020.9.6+0</footer>
   </body>
 </html>
