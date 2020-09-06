@@ -111,15 +111,25 @@ footer {
 }
 
 .base-entry {
-    @apply border border-grey-5 rounded bg-white p-4 my-2;
+    @apply border-t border-b border-grey-5 bg-white p-4 my-2;
 }
 
 .base-entry-outer {
-    @apply border border-grey-5 rounded bg-white my-2;
+    @apply border-t border-b border-grey-5 bg-white my-2;
 }
 
 .base-entry-inner {
     @apply p-4;
+}
+
+@media (min-width: 640px) {
+    .base-entry {
+        @apply rounded border;
+    }
+
+    .base-entry-outer {
+        @apply rounded border;
+    }
 }
 
 .release {

@@ -24,7 +24,7 @@
         <a href="https://github.com/michaeljones/dashboard">Github</a>
       </div>
     </header>
-    <main role="main" class="p-3 sm:p-8">
+    <main role="main" class="sm:p-8">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
       <%= @inner_content %>
