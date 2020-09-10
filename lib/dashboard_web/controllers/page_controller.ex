@@ -83,13 +83,26 @@ defmodule DashboardWeb.PageController do
       |> Parallel.map(fn repository ->
         repository_path = "repos/#{repository}/events"
 
+        IO.puts(
+          "TTL for #{repository_path}: #{
+            Kernel.inspect(Cachex.ttl(:dashboard_cache, repository_path))
+          }"
+        )
+
+        {:ok, exists} = Cachex.exists?(:dashboard_cache, repository_path)
+
         {_, output} =
           Cachex.fetch(
             :dashboard_cache,
             repository_path,
-            fn key -> fetch_from_github(client, key) end,
-            ttl: :timer.hours(1)
+            fn key -> fetch_from_github(client, key) end
           )
+
+        # Set expiry for the cache entry - providing a 'ttl:' option to fetch
+        # doesn't seem to work for some reason.
+        if !exists do
+          Cachex.expire(:dashboard_cache, repository_path, :timer.hours(1))
+        end
 
         output
       end)
