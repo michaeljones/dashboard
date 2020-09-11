@@ -3,11 +3,13 @@ defmodule Dashboard.Application do
   # for more information on OTP Applications
   @moduledoc false
 
+  import Cachex.Spec
+
   use Application
 
   def start(_type, _args) do
     children = [
-      {Cachex, name: :dashboard_cache},
+      {Cachex, name: :dashboard_cache, expiration: expiration(default: :timer.hours(1))},
       # Start the Ecto repository
       Dashboard.Repo,
       # Start the Telemetry supervisor
