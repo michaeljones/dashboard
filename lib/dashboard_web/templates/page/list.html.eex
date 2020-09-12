@@ -62,7 +62,9 @@
             <%= cond do %>
               <% entry["payload"]["action"] == "opened" -> %>
                 <li class="base-entry">
-                  <%= repo_link entry["repo"] %> Opened Issue
+                  <%= repo_link entry["repo"] %>
+                  New Issue:
+                  <%= issue_link entry["payload"]["issue"] %>
                   - <%= Timex.from_now(entry["datetime"]) %>
                 </li>
 
@@ -74,7 +76,10 @@
             <li class="base-entry">
               <div>
                 <%= repo_link entry["repo"] %>
-                <div class="sm:inline">Comment on issue <%= issue_link entry["payload"]["issue"] %></div>
+                <div class="sm:inline">
+                  Comment on issue:
+                  <%= issue_link entry["payload"]["issue"] %>
+                </div>
                 <div class="hidden sm:inline">-</div>
                 <div class="sm:inline"><%= actor_link entry["actor"] %> - <%= Timex.from_now(entry["datetime"]) %></div>
               </div>
@@ -86,9 +91,8 @@
               <% entry["payload"]["action"] == "opened" -> %>
                 <li class="base-entry">
                   <%= repo_link entry["repo"] %>
-                  <div class="sm:inline">Pull Request Opened</div>
-                  <div class="hidden sm:inline">-</div>
-                  <div class="sm:inline"><%= pr_title_link entry["payload"]["pull_request"] %></div>
+                  <div class="sm:inline">New Pull Request:</div>
+                  <div class="sm:inline"><%= pr_link entry["payload"]["pull_request"] %></div>
                   <div class="hidden sm:inline">-</div>
                   <div class="sm:inline"><%= actor_link entry["actor"] %> - <%= Timex.from_now(entry["datetime"]) %></div>
                 </li>
@@ -96,9 +100,8 @@
               <% entry["payload"]["action"] == "closed" -> %>
                 <li class="base-entry">
                   <%= repo_link entry["repo"] %>
-                  <div class="sm:inline">Pull Request Closed</div>
-                  <div class="hidden sm:inline">-</div>
-                  <div class="sm:inline"><%= pr_title_link entry["payload"]["pull_request"] %></div>
+                  <div class="sm:inline">Pull Request Closed:</div>
+                  <div class="sm:inline"><%= pr_link entry["payload"]["pull_request"] %></div>
                   <div class="hidden sm:inline">-</div>
                   <div class="sm:inline"><%= actor_link entry["actor"] %> - <%= Timex.from_now(entry["datetime"]) %></div>
                 </li>

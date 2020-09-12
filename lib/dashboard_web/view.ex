@@ -39,10 +39,32 @@ defmodule DashboardWeb.View do
   end
 
   def issue_link(issue) do
+    Link.link("##{issue["number"]} #{issue["title"]}",
+      to: issue["html_url"],
+      class: "text-mid-blue"
+    )
+  end
+
+  def issue_number_link(issue) do
     Link.link("#" <> Integer.to_string(issue["number"]),
       to: issue["html_url"],
       class: "text-mid-blue"
     )
+  end
+
+  def issue_title_link(issue) do
+    Link.link(issue["title"], to: issue["html_url"], class: "text-mid-blue")
+  end
+
+  def pr_link(pr) do
+    Link.link("##{pr["number"]} #{pr["title"]}",
+      to: pr["html_url"],
+      class: "text-mid-blue"
+    )
+  end
+
+  def pr_number_link(pr) do
+    Link.link("#" <> Integer.to_string(pr["number"]), to: pr["html_url"], class: "text-mid-blue")
   end
 
   def pr_title_link(pr) do
