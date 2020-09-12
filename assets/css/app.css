@@ -133,7 +133,13 @@ footer {
 }
 
 .release {
-    @apply border-l-2 border-primary rounded;
+    @apply border-l-2 border-primary;
+}
+
+@media (min-width: 640px) {
+    .release {
+        @apply rounded;
+    }
 }
 
 .quiet-entry {

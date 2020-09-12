@@ -103,6 +103,11 @@ defmodule DashboardWeb.View do
     Link.link(text, to: url, class: "text-mid-blue truncate")
   end
 
+  def colon() do
+    # Must be without surrounding spaces to be properly inlined into the template
+    ~E[<span class="hidden sm:inline">:</span>]
+  end
+
   def markdown(text) do
     ~E"""
       <div class="mt-2 markdown">

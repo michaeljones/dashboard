@@ -40,7 +40,7 @@
           <% entry["type"] == "CommitCommentEvent" -> %>
             <li class="base-entry">
               <%= repo_link entry["repo"] %>
-              <div class="sm:inline">Comment on commit:</div>
+              <div class="sm:inline">Comment on commit<%= colon() %></div>
               <div class="sm:inline">
                 <%= sha_link entry["payload"]["comment"]["commit_id"], entry["repo"] %>
               </div>
@@ -52,9 +52,11 @@
           <% entry["type"] == "ReleaseEvent" -> %>
             <li class="base-entry-outer">
               <div class="base-entry-inner release">
-                <%= repo_link entry["repo"] %> New Release
-                - <%= release_link entry["payload"]["release"] %>
-                - <%= Timex.from_now(entry["datetime"]) %>
+                <%= repo_link entry["repo"] %>
+                <div class="sm:inline">New Release<%= colon() %></div>
+                <div class="sm:inline"><%= release_link entry["payload"]["release"] %></div>
+                <div class="hidden sm:inline">-</div>
+                <div class="sm:inline"><%= actor_link entry["actor"] %> - <%= Timex.from_now(entry["datetime"]) %></div>
               </div>
             </li>
 
@@ -63,9 +65,10 @@
               <% entry["payload"]["action"] == "opened" -> %>
                 <li class="base-entry">
                   <%= repo_link entry["repo"] %>
-                  New Issue:
-                  <%= issue_link entry["payload"]["issue"] %>
-                  - <%= Timex.from_now(entry["datetime"]) %>
+                  <div class="sm:inline">New Issue<%= colon() %></div>
+                  <div class="sm:inline"><%= issue_link entry["payload"]["issue"] %></div>
+                  <div class="hidden sm:inline">-</div>
+                  <div class="sm:inline"><%= actor_link entry["actor"] %> - <%= Timex.from_now(entry["datetime"]) %></div>
                 </li>
 
               <% true -> %>
@@ -76,8 +79,8 @@
             <li class="base-entry">
               <div>
                 <%= repo_link entry["repo"] %>
+                <div class="sm:inline">Comment on issue<%= colon() %></div>
                 <div class="sm:inline">
-                  Comment on issue:
                   <%= issue_link entry["payload"]["issue"] %>
                 </div>
                 <div class="hidden sm:inline">-</div>
@@ -91,7 +94,7 @@
               <% entry["payload"]["action"] == "opened" -> %>
                 <li class="base-entry">
                   <%= repo_link entry["repo"] %>
-                  <div class="sm:inline">New Pull Request:</div>
+                  <div class="sm:inline">New Pull Request<%= colon() %></div>
                   <div class="sm:inline"><%= pr_link entry["payload"]["pull_request"] %></div>
                   <div class="hidden sm:inline">-</div>
                   <div class="sm:inline"><%= actor_link entry["actor"] %> - <%= Timex.from_now(entry["datetime"]) %></div>
@@ -100,7 +103,7 @@
               <% entry["payload"]["action"] == "closed" -> %>
                 <li class="base-entry">
                   <%= repo_link entry["repo"] %>
-                  <div class="sm:inline">Pull Request Closed:</div>
+                  <div class="sm:inline">Pull Request Closed<%= colon() %></div>
                   <div class="sm:inline"><%= pr_link entry["payload"]["pull_request"] %></div>
                   <div class="hidden sm:inline">-</div>
                   <div class="sm:inline"><%= actor_link entry["actor"] %> - <%= Timex.from_now(entry["datetime"]) %></div>
@@ -113,7 +116,7 @@
           <% entry["type"] == "PullRequestReviewEvent" -> %>
             <li class="base-entry">
               <%= repo_link entry["repo"] %>
-              <div class="sm:inline">Pull Request Review:</div>
+              <div class="sm:inline">Pull Request Review<%= colon() %></div>
               <div class="sm:inline">
                 <%= link entry["payload"]["pull_request"]["title"], to: entry["payload"]["review"]["html_url"], class: "text-mid-blue"%>
               </div>
