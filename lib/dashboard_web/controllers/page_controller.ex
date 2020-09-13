@@ -113,11 +113,20 @@ defmodule DashboardWeb.PageController do
     IO.puts("Fetching #{repository_path}")
     {_status, output, _response} = Tentacat.get(repository_path, client)
 
+    one_month_ago =
+      Timex.now()
+      |> Timex.subtract(Timex.Duration.from_days(30))
+
     value =
       output
       |> Enum.map(fn entry ->
         Map.put(entry, "datetime", NaiveDateTime.from_iso8601!(entry["created_at"]))
       end)
+      # Filter to the last month of activity. I can't see how to do this with
+      # the actual query to Github and Github returns up to 3 months of
+      # activity
+      |> Enum.filter(&(Timex.compare(one_month_ago, &1["datetime"], :day) == -1))
+      # Remove events that we're not interested in
       |> Enum.filter(&(&1["type"] not in ["WatchEvent", "ForkEvent"]))
 
     {:commit, value}
