@@ -56,9 +56,13 @@ defmodule DashboardWeb.View do
     Link.link(issue["title"], to: issue["html_url"], class: "text-mid-blue")
   end
 
-  def pr_link(pr) do
+  def pr_link(pr, opts \\ []) do
+    # Allow overriding for when you want the PR's number & number but to link
+    # to a specific comment or something
+    to = Keyword.get(opts, :to, pr["html_url"])
+
     Link.link("##{pr["number"]} #{pr["title"]}",
-      to: pr["html_url"],
+      to: to,
       class: "text-mid-blue"
     )
   end
@@ -120,7 +124,7 @@ defmodule DashboardWeb.View do
     ~E"""
       <li class="base-entry border-secondary">
         <div class="sm:inline"><%= repo_link entry["repo"] %></div>
-        <div class="sm:inline"><%= entry["type"] %></div>
+        <div class="sm:inline">Unhandled <%= entry["type"] %></div>
         <div class="hidden sm:inline">-</div>
         <div class="sm:inline"><%= actor_link entry["actor"] %> - <%= Timex.from_now(entry["datetime"]) %></div>
       </li>
@@ -128,6 +132,10 @@ defmodule DashboardWeb.View do
   end
 
   def dump(entry) do
-    ~E"<pre><%= Kernel.inspect(entry, pretty: true) %></pre>"
+    ~E"""
+      <li class="base-entry">
+        <pre><%= Kernel.inspect(entry, pretty: true) %></pre>
+      </li>
+    """
   end
 end
