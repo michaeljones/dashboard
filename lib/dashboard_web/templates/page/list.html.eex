@@ -10,7 +10,10 @@
   <% end %>
 </ul>
 
-<p class="m-2 sm:ml-4">Events are cached for an hour. Red border indicates events that don't have specific display code yet.</p>
+<p class="m-2 sm:ml-4">
+  Events are cached for an hour. Red border indicates events that don't have specific display code yet.
+  <button id="hide-comments" class="text-mid-blue">Hide Comments &amp; Reviews</button>
+</p>
 
 <div class="timeline-container links-secondary">
   <div class="timeline-background"></div>
@@ -38,7 +41,7 @@
             </li>
 
           <% entry["type"] == "CommitCommentEvent" -> %>
-            <li class="base-entry">
+            <li class="base-entry comment">
               <%= repo_link entry["repo"] %>
               <div class="sm:inline">Comment on commit<%= colon() %></div>
               <div class="sm:inline">
@@ -95,7 +98,7 @@
             <% end %>
 
           <% entry["type"] == "IssueCommentEvent" -> %>
-            <li class="base-entry">
+            <li class="base-entry comment">
               <div>
                 <%= repo_link entry["repo"] %>
                 <div class="sm:inline">Comment on issue<%= colon() %></div>
@@ -133,7 +136,7 @@
             <% end %>
 
           <% entry["type"] == "PullRequestReviewEvent" -> %>
-            <li class="base-entry">
+            <li class="base-entry comment">
               <%= repo_link entry["repo"] %>
               <div class="sm:inline">Pull request review<%= colon() %></div>
               <div class="sm:inline">
@@ -144,7 +147,7 @@
             </li>
 
           <% entry["type"] == "PullRequestReviewCommentEvent" -> %>
-            <li class="base-entry">
+            <li class="base-entry comment">
               <div>
                 <%= repo_link entry["repo"] %>
                 <div class="sm:inline">Review comment on pull request<%= colon() %></div>

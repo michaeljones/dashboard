@@ -22,3 +22,18 @@ document.getElementById("show-repositories").addEventListener("click", function(
         element.style.display = "block";
     }
 });
+
+let commentsHidden = false;
+document.getElementById("hide-comments").addEventListener("click", function(event) {
+    var element = document.getElementById("comment-style");
+    var button = document.getElementById("hide-comments");
+    if (commentsHidden) {
+        element.textContent = ".comment {}";
+        button.textContent = "Hide Comments & Reviews";
+    } else {
+        element.textContent = ".comment { display: none; }";
+        button.textContent = "Show Comments & Reviews";
+    }
+
+    commentsHidden = !commentsHidden;
+});
